@@ -5,12 +5,18 @@ import ListItemButton from "@mui/material/ListItemButton";
 import { Formik, Form } from "formik";
 import { useNavigate, NavigateFunction } from "react-router-dom";
 import LoadingButton from "../../Component/LoadingButton";
+import { stringify } from "querystring";
 
 function LoginServices() {
   const navigate: NavigateFunction = useNavigate();
   const [show, setShow] = React.useState(false);
   const [loading, setLoading] = React.useState(false);
-
+  React.useEffect(() => {
+    const token: string | null = localStorage.getItem("token");
+    if (token) {
+      navigate("/fix/services/services-app/services-dashboard");
+    }
+  }, []);
   return (
     <Box
       sx={{
@@ -39,7 +45,8 @@ function LoginServices() {
               password: "",
             }}
             onSubmit={async (values) => {
-              console.log(values);
+              localStorage.setItem("token", JSON.stringify(values));
+              navigate("/fix/services/services-app/services-dashboard");
             }}
           >
             {({ getFieldProps }) => (

@@ -1,8 +1,8 @@
 import LoginServices from "../Auth/Login/LoginServices";
 import LayoutServices from "../Layout/Services";
 import ServicesMainLayout from "../Layout/Services/ServicesMainLayout";
-import Dashboard from "../Layout/Teknition/Pages/Dashboard/Dashboard";
 import { Navigate } from "react-router-dom";
+import DashboardServices from "../Layout/Services/DashboardServices";
 
 export const servicesPathElement: {
   path: string;
@@ -32,7 +32,7 @@ export const servicesPathElement: {
       children: [
         {
           path: "services-dashboard",
-          element: <Dashboard />,
+          element: <DashboardServices />,
         },
       ],
     },
