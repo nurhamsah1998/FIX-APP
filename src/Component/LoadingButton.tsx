@@ -11,6 +11,8 @@ function LoadingButton({
   isLoading?: boolean;
   sx?: SxProps;
   title: string;
+  color?: any;
+  onClick?: () => void;
   height?: string;
   fullWidth: boolean;
   type?: any;

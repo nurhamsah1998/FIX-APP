@@ -1,6 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
+import { SnackbarProvider } from "notistack";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import MUI from "./Utils/Theme";
@@ -15,9 +16,11 @@ root.render(
   <React.StrictMode>
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>
-        <MUI>
-          <App />
-        </MUI>
+        <SnackbarProvider maxSnack={3}>
+          <MUI>
+            <App />
+          </MUI>
+        </SnackbarProvider>
       </BrowserRouter>
     </QueryClientProvider>
   </React.StrictMode>

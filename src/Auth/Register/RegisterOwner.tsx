@@ -5,12 +5,13 @@ import ListItemButton from "@mui/material/ListItemButton";
 import { Formik, Form } from "formik";
 import { useNavigate, NavigateFunction } from "react-router-dom";
 import LoadingButton from "../../Component/LoadingButton";
+import useRegister from "../../Hook/Auth/useRegister";
 
-function LoginOwner() {
+function RegisterOwner() {
   const navigate: NavigateFunction = useNavigate();
   const [show, setShow] = React.useState(false);
   const [loading, setLoading] = React.useState(false);
-
+  const { register, isLoading } = useRegister({ module: "register" });
   return (
     <Box
       sx={{
@@ -31,7 +32,7 @@ function LoginOwner() {
       >
         <Box>
           <Typography variant="h6" fontWeight={400}>
-            Pemilik / CEO
+            Daftar sebagai pemilik / CEO
           </Typography>
           <Formik
             initialValues={{
@@ -39,7 +40,7 @@ function LoginOwner() {
               password: "",
             }}
             onSubmit={async (values) => {
-              console.log(values);
+              register.mutate(values);
             }}
           >
             {({ getFieldProps }) => (
@@ -47,7 +48,13 @@ function LoginOwner() {
                 <Box>
                   {(
                     [
-                      { name: "email", placeholder: "email", type: "email" },
+                      { name: "name", placeholder: "Nama", type: "text" },
+                      { name: "email", placeholder: "Email", type: "email" },
+                      {
+                        name: "companyName",
+                        placeholder: "Nama perusahaan",
+                        type: "text",
+                      },
                       {
                         name: "password",
                         placeholder: "password",
@@ -67,19 +74,10 @@ function LoginOwner() {
                   ))}
                   <Box sx={{ display: "grid" }}>
                     <LoadingButton
+                      type="submit"
+                      isLoading={isLoading}
                       sx={{ mt: 2 }}
                       fullWidth
-                      type="submit"
-                      title="Masuk"
-                    />
-                    <Typography sx={{ mt: 1, textAlign: "center" }}>
-                      Belum punya akun?
-                    </Typography>
-                    <LoadingButton
-                      onClick={() => navigate("/fix/owner/register")}
-                      sx={{ mt: 1 }}
-                      fullWidth
-                      color="secondary"
                       title="Daftar"
                     />
                   </Box>
@@ -93,4 +91,4 @@ function LoginOwner() {
   );
 }
 
-export default LoginOwner;
+export default RegisterOwner;

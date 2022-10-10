@@ -3,6 +3,7 @@ import LayoutOwner from "../Layout/Owner";
 import OwnerMainLayout from "../Layout/Owner/OwnerMainLayout";
 import Dashboard from "../Layout/Teknition/Pages/Dashboard/Dashboard";
 import { Navigate } from "react-router-dom";
+import RegisterOwner from "../Auth/Register/RegisterOwner";
 
 export const ownerPathElement: {
   path: string;
@@ -39,6 +40,10 @@ export const ownerPathElement: {
     {
       path: "login",
       element: <LoginOwner />,
+    },
+    {
+      path: "register",
+      element: <RegisterOwner />,
     },
     {
       path: "/fix/owner",
