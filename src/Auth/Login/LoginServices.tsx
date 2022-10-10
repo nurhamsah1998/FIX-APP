@@ -1,14 +1,15 @@
 import React, { useContext, useEffect } from "react";
 import { Box, Button, Link, Paper, TextField, Typography } from "@mui/material";
-import { grey, green } from "@mui/material/colors";
-import ListItemButton from "@mui/material/ListItemButton";
 import { Formik, Form } from "formik";
 import { useNavigate, NavigateFunction } from "react-router-dom";
 import LoadingButton from "../../Component/LoadingButton";
-import { stringify } from "querystring";
+import useLogin from "../../Hook/Auth/useLogin";
 
 function LoginServices() {
   const navigate: NavigateFunction = useNavigate();
+  const { login, isLoading } = useLogin({
+    module: "login",
+  });
   const [show, setShow] = React.useState(false);
   const [loading, setLoading] = React.useState(false);
   React.useEffect(() => {
@@ -45,8 +46,7 @@ function LoginServices() {
               password: "",
             }}
             onSubmit={async (values) => {
-              localStorage.setItem("token", JSON.stringify(values));
-              navigate("/fix/services/services-app/services-dashboard");
+              login.mutate(values);
             }}
           >
             {({ getFieldProps }) => (
@@ -73,6 +73,7 @@ function LoginServices() {
                     </Box>
                   ))}
                   <LoadingButton
+                    isLoading={isLoading}
                     sx={{ mt: 2 }}
                     fullWidth
                     type="submit"

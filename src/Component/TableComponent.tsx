@@ -31,7 +31,7 @@ function TableComponent({
         <TableHead>
           <TableRow sx={{ bgcolor: "#1BC5BD" }}>
             {tableBody?.length <= 0 ? (
-              <TableCell></TableCell>
+              <TableCell>Kosyong</TableCell>
             ) : (
               tableHead?.map((head: any, index: number) => {
                 const isOPtion: any =
