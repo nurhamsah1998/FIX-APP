@@ -12,8 +12,22 @@ function useRegister({ module }: { module: string }) {
         ...values,
       }),
     {
-      onSuccess: () => {
-        enqueueSnackbar("Register berhasil", { variant: "success" });
+      onSuccess: async (res: any, value: any) => {
+        if (res.error) {
+          enqueueSnackbar("Register gagal", { variant: "error" });
+        } else {
+          const { data, error } = await supabase.from("account_owner").insert([
+            {
+              name: value?.name,
+              email: value?.email,
+              company_name: value?.company_name,
+              user_id: supabase.auth.user()?.id,
+            },
+          ]);
+          if (data) {
+            enqueueSnackbar("Register berhasil", { variant: "success" });
+          }
+        }
       },
     }
   );

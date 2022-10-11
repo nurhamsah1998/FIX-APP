@@ -43,7 +43,7 @@ function MainLayout(): JSX.Element {
     },
   ];
   const handleClick: (item: any) => void = (item: any) => {
-    navigate(`/fix/${item.auth}`);
+    navigate(`/fix/${item.auth}/login`);
   };
   return (
     <Box sx={{ height: "100vh" }}>

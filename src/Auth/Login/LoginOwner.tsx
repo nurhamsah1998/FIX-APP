@@ -5,12 +5,21 @@ import ListItemButton from "@mui/material/ListItemButton";
 import { Formik, Form } from "formik";
 import { useNavigate, NavigateFunction } from "react-router-dom";
 import LoadingButton from "../../Component/LoadingButton";
+import useLogin from "../../Hook/Auth/useLogin";
 
 function LoginOwner() {
   const navigate: NavigateFunction = useNavigate();
   const [show, setShow] = React.useState(false);
   const [loading, setLoading] = React.useState(false);
-
+  const { login, isLoading } = useLogin({
+    module: "login",
+  });
+  React.useEffect(() => {
+    const ownerToken = localStorage.getItem("supabase.auth.token");
+    if (ownerToken) {
+      navigate("/fix/owner/owner-app/owner-dashboard");
+    }
+  }, []);
   return (
     <Box
       sx={{
@@ -39,7 +48,7 @@ function LoginOwner() {
               password: "",
             }}
             onSubmit={async (values) => {
-              console.log(values);
+              login.mutate(values);
             }}
           >
             {({ getFieldProps }) => (
@@ -68,6 +77,7 @@ function LoginOwner() {
                   <Box sx={{ display: "grid" }}>
                     <LoadingButton
                       sx={{ mt: 2 }}
+                      isLoading={isLoading}
                       fullWidth
                       type="submit"
                       title="Masuk"

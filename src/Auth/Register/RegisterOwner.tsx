@@ -1,7 +1,5 @@
 import React, { useContext, useEffect } from "react";
 import { Box, Button, Link, Paper, TextField, Typography } from "@mui/material";
-import { grey, green } from "@mui/material/colors";
-import ListItemButton from "@mui/material/ListItemButton";
 import { Formik, Form } from "formik";
 import { useNavigate, NavigateFunction } from "react-router-dom";
 import LoadingButton from "../../Component/LoadingButton";
@@ -10,7 +8,6 @@ import useRegister from "../../Hook/Auth/useRegister";
 function RegisterOwner() {
   const navigate: NavigateFunction = useNavigate();
   const [show, setShow] = React.useState(false);
-  const [loading, setLoading] = React.useState(false);
   const { register, isLoading } = useRegister({ module: "register" });
   return (
     <Box
@@ -37,6 +34,8 @@ function RegisterOwner() {
           <Formik
             initialValues={{
               email: "",
+              name: "",
+              company_name: "",
               password: "",
             }}
             onSubmit={async (values) => {
@@ -51,7 +50,7 @@ function RegisterOwner() {
                       { name: "name", placeholder: "Nama", type: "text" },
                       { name: "email", placeholder: "Email", type: "email" },
                       {
-                        name: "companyName",
+                        name: "company_name",
                         placeholder: "Nama perusahaan",
                         type: "text",
                       },
