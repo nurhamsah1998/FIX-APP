@@ -1,9 +1,11 @@
 import LoginOwner from "../Auth/Login/LoginOwner";
 import LayoutOwner from "../Layout/Owner";
 import OwnerMainLayout from "../Layout/Owner/OwnerMainLayout";
-import Dashboard from "../Layout/Teknition/Pages/Dashboard/Dashboard";
+import Dashboard from "../Pages/Owner/Dashboard";
 import { Navigate } from "react-router-dom";
 import RegisterOwner from "../Auth/Register/RegisterOwner";
+import Report from "../Pages/Owner/Report";
+import Employee from "../Pages/Owner/Employee";
 
 export const ownerPathElement: {
   path: string;
@@ -34,6 +36,14 @@ export const ownerPathElement: {
         {
           path: "owner-dashboard",
           element: <Dashboard />,
+        },
+        {
+          path: "owner-employee",
+          element: <Employee />,
+        },
+        {
+          path: "owner-report",
+          element: <Report />,
         },
       ],
     },

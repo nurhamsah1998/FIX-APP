@@ -39,9 +39,23 @@ function LoginOwner() {
         }}
       >
         <Box>
-          <Typography variant="h6" fontWeight={400}>
-            Pemilik / CEO
-          </Typography>
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+            }}
+          >
+            <LoadingButton
+              onClick={() => navigate("/fix")}
+              color="error"
+              sx={{ minHeight: 0, minWidth: 0, fontWeight: 600 }}
+              title="<"
+            />
+            <Typography variant="h6" fontWeight={400}>
+              Pemilik / CEO
+            </Typography>
+          </Box>
           <Formik
             initialValues={{
               email: "",
@@ -82,7 +96,9 @@ function LoginOwner() {
                       type="submit"
                       title="Masuk"
                     />
-                    <Typography sx={{ mt: 1, textAlign: "center" }}>
+                    <Typography
+                      sx={{ mt: 1, textAlign: "center", fontSize: 13 }}
+                    >
                       Belum punya akun?
                     </Typography>
                     <LoadingButton

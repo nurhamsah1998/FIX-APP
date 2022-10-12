@@ -30,9 +30,23 @@ function LoginAdmin() {
         }}
       >
         <Box>
-          <Typography variant="h6" fontWeight={400}>
-            Admin
-          </Typography>
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+            }}
+          >
+            <LoadingButton
+              onClick={() => navigate("/fix")}
+              color="error"
+              sx={{ minHeight: 0, minWidth: 0, fontWeight: 600 }}
+              title="<"
+            />
+            <Typography variant="h6" fontWeight={400}>
+              Admin
+            </Typography>
+          </Box>
           <Formik
             initialValues={{
               email: "",

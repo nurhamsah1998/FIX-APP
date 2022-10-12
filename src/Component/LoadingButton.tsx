@@ -14,7 +14,7 @@ function LoadingButton({
   color?: any;
   onClick?: () => void;
   height?: string;
-  fullWidth: boolean;
+  fullWidth?: boolean;
   type?: any;
 }) {
   return (
