@@ -115,14 +115,14 @@ function TableComponent({
                     )}
                   </TableCell>
                 ))}
-                <TableCell sx={{ border: "none" }}>
+                {/* <TableCell sx={{ border: "none" }}>
                   <Button
                     onClick={() => handleClickReply(body)}
                     variant="contained"
                   >
                     {btnLabel}
                   </Button>
-                </TableCell>
+                </TableCell> */}
               </TableRow>
             ))
           )}

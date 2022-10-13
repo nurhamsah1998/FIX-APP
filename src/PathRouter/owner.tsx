@@ -5,7 +5,7 @@ import Dashboard from "../Pages/Owner/Dashboard";
 import { Navigate } from "react-router-dom";
 import RegisterOwner from "../Auth/Register/RegisterOwner";
 import Report from "../Pages/Owner/Report";
-import Employee from "../Pages/Owner/Employee";
+import Employee from "../Pages/Owner/Employee/Employee";
 
 export const ownerPathElement: {
   path: string;
