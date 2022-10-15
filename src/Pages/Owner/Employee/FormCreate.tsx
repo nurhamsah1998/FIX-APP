@@ -2,6 +2,7 @@ import React from "react";
 import { Form } from "formik";
 import { TextField, Box } from "@mui/material";
 import AsyncAutoComplete from "../../../Component/AsyncAutoComplete";
+import SubmitForm from "../../../Component/SubmitForm";
 
 function FormCreate({ ...props }) {
   return (
@@ -13,21 +14,30 @@ function FormCreate({ ...props }) {
           fullWidth
           {...props.getFieldProps("name")}
         />
-        <AsyncAutoComplete module="position" label="Posisi" />
+        <AsyncAutoComplete
+          onChange={(x: any, y: any) => {
+            {
+              props.setFieldValue("position_id", y?.id);
+            }
+          }}
+          module="position"
+          label="Posisi"
+        />
         <TextField
           size="small"
           label="Email"
           fullWidth
-          {...props.getFieldProps("name")}
+          {...props.getFieldProps("email")}
         />
         <TextField
           size="small"
           label="Akses kode"
           fullWidth
-          {...props.getFieldProps("name")}
+          {...props.getFieldProps("access_code")}
           helperText="minimal 8 abjad"
         />
       </Box>
+      <SubmitForm />
     </Form>
   );
 }

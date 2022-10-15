@@ -6,26 +6,28 @@ import {
   QueryClient,
 } from "@tanstack/react-query";
 import { useSnackbar } from "notistack";
+import useGetData from "../useGetData";
 
 function useMutationPost({
   module,
   successMessage = "success",
   errorMessage = "error",
-}: {
-  module: string;
-  errorMessage?: string;
-  successMessage?: string;
 }) {
+  const { items } = useGetData({
+    module: "account_owner",
+  });
+  const data = items?.[0];
   const { enqueueSnackbar } = useSnackbar();
-  const client: QueryClient = useQueryClient();
+  const client = useQueryClient();
   const mutationPost = useMutation(
     [module],
-    (values: any) =>
-      supabase.auth.signUp({
+    (values) =>
+      supabase.from(module).insert({
         ...values,
+        account_owner_id: data?.id,
       }),
     {
-      onSuccess: (res: any) => {
+      onSuccess: (res) => {
         if (res.error) {
           enqueueSnackbar(errorMessage, { variant: "error" });
         } else {

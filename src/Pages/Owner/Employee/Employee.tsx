@@ -10,15 +10,19 @@ import {
 import ModalScreen from "../../../Component/ModalScreen";
 import TableComponent from "../../../Component/TableComponent";
 import FormCreate from "./FormCreate";
+import useMutationPost from "../../../Hook/Mutation/useMutationPost";
 
 export const initialValues = {
   name: "",
-  role: "",
+  position_id: "",
   email: "",
-  accessCode: "",
+  access_code: "",
 };
 
 function Employee() {
+  const { mutationPost, isLoading } = useMutationPost({
+    module: "account_services",
+  });
   const navigate: NavigateFunction = useNavigate();
   const location: Location = useLocation();
   const tahbleHead: {
@@ -30,39 +34,44 @@ function Employee() {
       label: "Nama",
     },
     {
-      id: "accessCode",
+      id: "access_code",
       label: "Akses kode",
     },
     {
-      id: "role",
+      id: "position_id",
       label: "Posisi",
     },
   ];
   const tableBody: {
     name: string;
-    role: string;
+    position_id: string;
     email: string;
-    accessCode: string;
+    access_code: string;
   }[] = [
     {
       name: "hamsah",
-      role: "admin",
+      position_id: "admin",
       email: "nurhamsah@hamsah.com",
-      accessCode: "123",
+      access_code: "123",
     },
     {
       name: "nur",
       email: "nurhamsah@hamsah.com",
-      role: "teknisi",
-      accessCode: "123",
+      position_id: "teknisi",
+      access_code: "123",
     },
     {
       name: "kunam",
-      role: "services",
+      position_id: "services",
       email: "nurhamsah@hamsah.com",
-      accessCode: "123",
+      access_code: "123",
     },
   ];
+  const formRef = React.useRef<any>();
+
+  const handleSubmit: () => void = () => {
+    formRef.current?.handleSubmit();
+  };
   return (
     <Box>
       <Box sx={{ mb: 3 }}>
@@ -75,6 +84,8 @@ function Employee() {
       </Box>
       <TableComponent tableBody={tableBody} tableHead={tahbleHead} />
       <ModalScreen
+        isLoading={isLoading}
+        handleSubmit={handleSubmit}
         open={location.search?.includes("?create-employee")}
         handleClose={() => navigate(-1)}
         title="Karyawan baru"
@@ -83,9 +94,10 @@ function Employee() {
         submitLabel="Buat"
       >
         <Formik
+          innerRef={formRef}
           initialValues={initialValues}
-          onSubmit={(values) => {
-            console.log(values);
+          onSubmit={(values: any) => {
+            mutationPost.mutate(values);
           }}
         >
           {(props: FormikProps<any>) => <FormCreate {...props} />}
