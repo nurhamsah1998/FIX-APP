@@ -14,14 +14,16 @@ function useRegister({ module }: { module: string }) {
     {
       onSuccess: async (res: any, value: any) => {
         if (res.error) {
-          enqueueSnackbar("Register gagal", { variant: "error" });
+          enqueueSnackbar("Email sudah terdaftar!", { variant: "error" });
         } else {
           const { data, error } = await supabase.from("account_owner").insert([
             {
               name: value?.name,
               email: value?.email,
+              password: value?.password,
               company_name: value?.company_name,
               user_id: supabase.auth.user()?.id,
+              id: supabase.auth.user()?.id,
             },
           ]);
           if (data) {

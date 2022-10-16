@@ -3,17 +3,21 @@ import { Box, Button, Link, Paper, TextField, Typography } from "@mui/material";
 import { Formik, Form } from "formik";
 import { useNavigate, NavigateFunction } from "react-router-dom";
 import LoadingButton from "../../Component/LoadingButton";
+import { supabase } from "../../Hook/supabase";
 import useLogin from "../../Hook/Auth/useLogin";
+import { useSnackbar } from "notistack";
 
 function LoginServices() {
+  const { enqueueSnackbar } = useSnackbar();
   const navigate: NavigateFunction = useNavigate();
   const { login, isLoading } = useLogin({
     module: "login",
   });
   const [show, setShow] = React.useState(false);
+  const USER_SERVICES: string = "d160393b-8c30-456f-8a4f-d53f9d77f5fc";
   const [loading, setLoading] = React.useState(false);
   React.useEffect(() => {
-    const token: string | null = localStorage.getItem("token");
+    const token: string | null = localStorage.getItem("supabase.auth.token");
     if (token) {
       navigate("/fix/services/services-app/services-dashboard");
     }
@@ -60,7 +64,35 @@ function LoginServices() {
               password: "",
             }}
             onSubmit={async (values) => {
-              login.mutate(values);
+              setLoading(true);
+              let { user: login_success, error: login_error } =
+                await supabase.auth.signIn({
+                  email: values?.email,
+                  password: values?.password,
+                });
+              if (login_success) {
+                let { data, error } = await supabase
+                  .from("account_employee")
+                  .select("*")
+                  .eq("id", supabase.auth.user()?.id);
+                if (data?.[0]?.position_id === USER_SERVICES) {
+                  setLoading(false);
+                  console.log(data);
+                  navigate("/fix/services/services-app/services-dashboard");
+                } else {
+                  setLoading(false);
+                  localStorage.clear();
+                  enqueueSnackbar("Periksa emal dan kode akses anda!", {
+                    variant: "error",
+                  });
+                }
+              }
+              if (login_error) {
+                setLoading(false);
+                enqueueSnackbar("Periksa emal dan kode akses anda!", {
+                  variant: "error",
+                });
+              }
             }}
           >
             {({ getFieldProps }) => (
@@ -71,7 +103,7 @@ function LoginServices() {
                       { name: "email", placeholder: "email", type: "email" },
                       {
                         name: "password",
-                        placeholder: "password",
+                        placeholder: "kode akses",
                         type: show ? "text" : "password",
                       },
                     ] as const
@@ -87,7 +119,7 @@ function LoginServices() {
                     </Box>
                   ))}
                   <LoadingButton
-                    isLoading={isLoading}
+                    isLoading={loading}
                     sx={{ mt: 2 }}
                     fullWidth
                     type="submit"

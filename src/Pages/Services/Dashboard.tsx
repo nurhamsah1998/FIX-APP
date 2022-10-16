@@ -7,21 +7,24 @@ import {
   useLocation,
   Location,
 } from "react-router-dom";
-import ModalScreen from "../../../Component/ModalScreen";
-import TableComponent from "../../../Component/TableComponent";
+import ModalScreen from "../../Component/ModalScreen";
+import TableComponent from "../../Component/TableComponent";
 import FormCreate from "./FormCreate";
-import useGetData from "../../../Hook/useGetData";
-import useMutationPostEmployee from "../../../Hook/Mutation/useMutationPostEmployee";
-import { supabase } from "../../../Hook/supabase";
+import useGetData from "../../Hook/useGetData";
+import useMutationPostEmployee from "../../Hook/Mutation/useMutationPostEmployee";
+import { supabase } from "../../Hook/supabase";
 
 export const initialValues = {
-  name: "",
-  position_id: "",
-  email: "",
-  access_code: "",
+  user_name: "",
+  phone: "",
+  user_address: "",
+  printer_model: "",
+  printer_Type: "",
+  failure: "",
+  account_owner_id: "",
 };
 
-function Employee() {
+function Dashboard() {
   const { mutationPost, isLoading } = useMutationPostEmployee({
     module: "account_employee",
   });
@@ -68,7 +71,7 @@ function Employee() {
           variant="contained"
           onClick={() => navigate("?create-employee")}
         >
-          Tambah karyawan
+          Tambah servisan masuk
         </Button>
       </Box>
       <TableComponent tableBody={tableBody} tableHead={tahbleHead} />
@@ -77,7 +80,7 @@ function Employee() {
         handleSubmit={handleSubmit}
         open={location.search?.includes("?create-employee")}
         handleClose={() => navigate(-1)}
-        title="Karyawan baru"
+        title="Tambah servisan masuk"
         variant="main"
         cancelLabel="Batal"
         submitLabel="Buat"
@@ -86,7 +89,7 @@ function Employee() {
           innerRef={formRef}
           initialValues={initialValues}
           onSubmit={(values: any) => {
-            mutationPost.mutate(values);
+            console.log(values);
           }}
         >
           {(props: FormikProps<any>) => <FormCreate {...props} />}
@@ -96,4 +99,4 @@ function Employee() {
   );
 }
 
-export default Employee;
+export default Dashboard;

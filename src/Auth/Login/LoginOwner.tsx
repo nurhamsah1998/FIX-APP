@@ -6,9 +6,12 @@ import { Formik, Form } from "formik";
 import { useNavigate, NavigateFunction } from "react-router-dom";
 import LoadingButton from "../../Component/LoadingButton";
 import useLogin from "../../Hook/Auth/useLogin";
+import { useSnackbar } from "notistack";
+import { supabase } from "../../Hook/supabase";
 
 function LoginOwner() {
   const navigate: NavigateFunction = useNavigate();
+  const { enqueueSnackbar } = useSnackbar();
   const [show, setShow] = React.useState(false);
   const [loading, setLoading] = React.useState(false);
   const { login, isLoading } = useLogin({
@@ -62,7 +65,34 @@ function LoginOwner() {
               password: "",
             }}
             onSubmit={async (values) => {
-              login.mutate(values);
+              setLoading(true);
+              let { user: login_success, error: login_error } =
+                await supabase.auth.signIn({
+                  email: values?.email,
+                  password: values?.password,
+                });
+              if (login_success) {
+                let { data, error } = await supabase
+                  .from("account_owner")
+                  .select("id");
+                if ((data as any)?.[0]?.id) {
+                  window.location.reload();
+                  setLoading(false);
+                  return false;
+                } else {
+                  localStorage.clear();
+                  enqueueSnackbar("Cek email dan katasandi anda", {
+                    variant: "error",
+                  });
+                  setLoading(false);
+                }
+              }
+              if (login_error) {
+                enqueueSnackbar("Cek email dan katasandi anda", {
+                  variant: "error",
+                });
+                setLoading(false);
+              }
             }}
           >
             {({ getFieldProps }) => (
@@ -91,7 +121,7 @@ function LoginOwner() {
                   <Box sx={{ display: "grid" }}>
                     <LoadingButton
                       sx={{ mt: 2 }}
-                      isLoading={isLoading}
+                      isLoading={loading}
                       fullWidth
                       type="submit"
                       title="Masuk"

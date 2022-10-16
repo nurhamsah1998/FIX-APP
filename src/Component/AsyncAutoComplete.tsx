@@ -1,5 +1,5 @@
 import React from "react";
-import useGetData from "../Hook/useGetData";
+import useGetDataSingle from "../Hook/useGetDataSingle";
 import { Autocomplete, TextField, Box } from "@mui/material";
 
 function AsyncAutoComplete({
@@ -11,7 +11,7 @@ function AsyncAutoComplete({
   module?: any;
   label: string;
 }) {
-  const { items, refetch, isLoading } = useGetData({
+  const { items, refetch, isLoading } = useGetDataSingle({
     module: module,
     enabled: false,
   });

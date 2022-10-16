@@ -15,7 +15,7 @@ import Typography from "@mui/material/Typography";
 import { Outlet } from "react-router-dom";
 import { ownerNavigate } from "./navigate";
 import { useNavigate, NavigateFunction } from "react-router-dom";
-import useGetData from "../../Hook/useGetData";
+import useGetDataSingle from "../../Hook/useGetDataSingle";
 
 const drawerWidth = 220;
 
@@ -29,7 +29,7 @@ interface Props {
 
 export default function OwnerMainLayout(props: Props) {
   const { window } = props;
-  const { items } = useGetData({
+  const { items } = useGetDataSingle({
     module: "account_owner",
   });
   const data: any = items?.[0];
