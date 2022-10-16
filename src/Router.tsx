@@ -5,6 +5,7 @@ import { tecnitionPathElement } from "./PathRouter/tecnition";
 import { servicesPathElement } from "./PathRouter/services";
 import { ownerPathElement } from "./PathRouter/owner";
 import { adminPathElement } from "./PathRouter/admin";
+import PageNotFound from "./Pages/404/PageNotFound";
 
 function Router() {
   return useRoutes([
@@ -15,6 +16,10 @@ function Router() {
     {
       path: "/fix",
       element: <MainLayout />,
+    },
+    {
+      path: "/404",
+      element: <PageNotFound />,
     },
     {
       path: "/",
