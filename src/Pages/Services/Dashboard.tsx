@@ -10,27 +10,25 @@ import {
 import ModalScreen from "../../Component/ModalScreen";
 import TableComponent from "../../Component/TableComponent";
 import FormCreate from "./FormCreate";
-import useGetData from "../../Hook/useGetData";
-import useMutationPostEmployee from "../../Hook/Mutation/useMutationPostEmployee";
-import { supabase } from "../../Hook/supabase";
+import useFetch from "../../Hook/useFetch";
+import useMutationPost from "../../Hook/Mutation/useMutationPost";
 
 export const initialValues = {
-  user_name: "",
+  name: "",
   phone: "",
-  user_address: "",
+  address: "",
   printer_model: "",
-  printer_Type: "",
+  printer_type_id: "",
   failure: "",
   account_owner_id: "",
 };
 
 function Dashboard() {
-  const { mutationPost, isLoading } = useMutationPostEmployee({
-    module: "account_employee",
+  const { mutationPost, isLoading } = useMutationPost({
+    module: "service_in",
   });
-  const { items } = useGetData({
-    module: "account_employee",
-    select: `*, position_name:position_id(name)`,
+  const { items } = useFetch({
+    module: "service_in",
   });
   const navigate: NavigateFunction = useNavigate();
   const location: Location = useLocation();
@@ -90,6 +88,7 @@ function Dashboard() {
           initialValues={initialValues}
           onSubmit={(values: any) => {
             console.log(values);
+            mutationPost.mutate(values);
           }}
         >
           {(props: FormikProps<any>) => <FormCreate {...props} />}

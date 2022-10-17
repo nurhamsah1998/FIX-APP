@@ -6,7 +6,7 @@ import {
   QueryClient,
 } from "@tanstack/react-query";
 import { useSnackbar } from "notistack";
-import useGetDataSingle from "../useGetDataSingle";
+import useGetDataSingle from "../useFetch";
 
 function useMutationPost({
   module,

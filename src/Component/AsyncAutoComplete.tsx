@@ -1,5 +1,5 @@
 import React from "react";
-import useGetDataSingle from "../Hook/useGetDataSingle";
+import useGetDataSingle from "../Hook/useFetch";
 import { Autocomplete, TextField, Box } from "@mui/material";
 
 function AsyncAutoComplete({

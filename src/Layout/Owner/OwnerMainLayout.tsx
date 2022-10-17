@@ -15,7 +15,7 @@ import Typography from "@mui/material/Typography";
 import { Outlet } from "react-router-dom";
 import { ownerNavigate } from "./navigate";
 import { useNavigate, NavigateFunction } from "react-router-dom";
-import useGetDataSingle from "../../Hook/useGetDataSingle";
+import useGetDataSingle from "../../Hook/useFetch";
 
 const drawerWidth = 220;
 

@@ -10,7 +10,7 @@ import {
 import ModalScreen from "../../../Component/ModalScreen";
 import TableComponent from "../../../Component/TableComponent";
 import FormCreate from "./FormCreate";
-import useGetData from "../../../Hook/useGetData";
+import useGetData from "../../../Hook/useGetDataSingle";
 import useMutationPostEmployee from "../../../Hook/Mutation/useMutationPostEmployee";
 import { supabase } from "../../../Hook/supabase";
 

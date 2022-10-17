@@ -12,28 +12,29 @@ function FormCreate({ ...props }) {
           size="small"
           label="Nama user"
           fullWidth
-          {...props.getFieldProps("user_name")}
+          {...props.getFieldProps("name")}
         />
         <TextField
           size="small"
           label="Alamat user"
           fullWidth
-          {...props.getFieldProps("user_address")}
+          {...props.getFieldProps("address")}
         />
-        {/* <AsyncAutoComplete
-          onChange={(x: any, y: any) => {
-            {
-              props.setFieldValue("position_id", y?.id);
-            }
-          }}
-          module="position"
-          label="Posisi"
-        /> */}
+
         <TextField
           size="small"
           label="No telpon"
           fullWidth
           {...props.getFieldProps("phone")}
+        />
+        <AsyncAutoComplete
+          onChange={(x: any, y: any) => {
+            {
+              props.setFieldValue("printer_type_id", y?.id);
+            }
+          }}
+          module="printer_type"
+          label="Tipe printer"
         />
         <TextField
           size="small"
@@ -41,12 +42,7 @@ function FormCreate({ ...props }) {
           fullWidth
           {...props.getFieldProps("printer_model")}
         />
-        <TextField
-          size="small"
-          label="Type printer"
-          fullWidth
-          {...props.getFieldProps("printer_Type")}
-        />
+
         <TextField
           size="small"
           label="Kerusakan"

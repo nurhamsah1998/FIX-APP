@@ -3,7 +3,7 @@ import React from "react";
 import { Navigate, Outlet } from "react-router-dom";
 import ScreenLoading from "../../Component/ScreenLoading";
 import { EmployeeContext } from "../../Hook/Context";
-import useGetData from "../../Hook/useGetData";
+import useGetData from "../../Hook/useGetDataSingle";
 import { pickRole } from "../../Utils/RoleConfig/RoleConfig";
 
 function ServicesMainLayout() {
