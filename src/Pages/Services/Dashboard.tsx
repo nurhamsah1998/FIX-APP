@@ -1,6 +1,6 @@
 import { Box, Button } from "@mui/material";
 import { Form, Formik, FormikProps } from "formik";
-import React from "react";
+import React, { useState } from "react";
 import {
   useNavigate,
   NavigateFunction,
@@ -31,6 +31,7 @@ function Dashboard() {
     module: "service_in",
     select: `*,printer_type : printer_type_id(name)`,
   });
+  const [open, setOpen] = useState<any>({ active: false, data: [] });
   const itemRebuild = items?.map((i: any) => ({
     ...i,
     printer_type: i?.printer_type?.name,
@@ -40,7 +41,12 @@ function Dashboard() {
   const tahbleHead: {
     id: string;
     label: string;
+    isStatus?: boolean;
   }[] = [
+    {
+      id: "number",
+      label: "No.",
+    },
     {
       id: "name",
       label: "Nama",
@@ -65,15 +71,19 @@ function Dashboard() {
       id: "failure",
       label: "Kerusakan",
     },
+    {
+      id: "status",
+      label: "Status",
+      isStatus: true,
+    },
   ];
-  const tableBody = items?.map((i: any) => ({
-    ...i,
-    position_name: i?.position_name?.name,
-  }));
   const formRef = React.useRef<any>();
 
   const handleSubmit: () => void = () => {
     formRef.current?.handleSubmit();
+  };
+  const handleClickRow: (item: any) => void = (item: any) => {
+    setOpen({ active: true, data: item });
   };
   return (
     <Box>
@@ -85,7 +95,12 @@ function Dashboard() {
           Tambah servisan masuk
         </Button>
       </Box>
-      <TableComponent tableBody={itemRebuild} tableHead={tahbleHead} />
+      <TableComponent
+        handleClickRow={handleClickRow}
+        tableBody={itemRebuild}
+        tableHead={tahbleHead}
+        variant="main"
+      />
       <ModalScreen
         isLoading={isLoading}
         handleSubmit={handleSubmit}
@@ -106,6 +121,18 @@ function Dashboard() {
         >
           {(props: FormikProps<any>) => <FormCreate {...props} />}
         </Formik>
+      </ModalScreen>
+      <ModalScreen
+        isLoading={isLoading}
+        handleSubmit={handleSubmit}
+        open={open.active}
+        handleClose={() => setOpen({ active: false, data: [] })}
+        title="Detail user servis"
+        variant="main"
+        cancelLabel="Batal"
+        submitLabel="Buat"
+      >
+        {open.data?.id}
       </ModalScreen>
     </Box>
   );

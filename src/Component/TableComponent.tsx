@@ -9,8 +9,7 @@ import {
   TableRow,
   Typography,
 } from "@mui/material";
-
-import { grey } from "@mui/material/colors";
+import { cyan, green, orange, purple, red, grey } from "@mui/material/colors";
 
 function TableComponent({
   tableHead,
@@ -18,18 +17,81 @@ function TableComponent({
   handleClickReply,
   btnLabel = "balas",
   emptyTag,
+  handleClickRow,
+  variant,
 }: {
   tableHead: any;
   tableBody: any;
+  variant?: any;
   handleClickReply?: any;
+  handleClickRow?: any;
   btnLabel?: string;
   emptyTag?: string;
 }) {
+  const statusDataRebuild: (params: any) => void = (params: any) => {
+    const status = [
+      {
+        id: "process",
+        value: "Proses",
+        color: "#fff",
+      },
+      {
+        id: "awaiting",
+        value: "Tunggu konfirmasi",
+        color: purple[500],
+      },
+      {
+        id: "success_not_pick",
+        value: "Selesai belum diambil",
+        color: orange[500],
+      },
+      {
+        id: "cancel",
+        value: "Cancel",
+        color: red[500],
+      },
+      {
+        id: "success_delivery",
+        value: "Selesai diantar",
+        color: cyan[500],
+      },
+      {
+        id: "success_pick",
+        value: "Selesai diambil",
+        color: green[500],
+      },
+    ];
+    const findValue = status.find((i: any) => i?.id === params);
+    return findValue;
+  };
+  const COLOR = (params: any) => {
+    const color = [
+      {
+        id: "main",
+        color: "#3f51b5",
+      },
+      {
+        id: "danger",
+        color: red[500],
+      },
+      {
+        id: "warning",
+        color: orange[500],
+      },
+    ];
+    const chooseColor = color?.find((i) => i?.id === params);
+    if (chooseColor) {
+      return chooseColor.color;
+    }
+    if (!chooseColor) {
+      return "#1bc5bd";
+    }
+  };
   return (
     <Box sx={{ bgcolor: "#fff" }}>
       <Table>
         <TableHead>
-          <TableRow sx={{ bgcolor: "#1BC5BD" }}>
+          <TableRow sx={{ bgcolor: COLOR(variant) }}>
             {tableBody?.length <= 0 ? (
               <TableCell>Kosyong</TableCell>
             ) : (
@@ -39,7 +101,13 @@ function TableComponent({
                 return (
                   <TableCell
                     colSpan={isOPtion}
-                    sx={{ fontWeight: 600, border: "none", color: "#fff" }}
+                    sx={{
+                      fontWeight: 600,
+                      border: "none",
+                      color: "#fff",
+                      py: 1,
+                      px: 0.5,
+                    }}
                     key={index}
                   >
                     {head.label}
@@ -63,59 +131,83 @@ function TableComponent({
               </TableCell>
             </TableRow>
           ) : (
-            tableBody?.map((body: any, index: number) => (
-              <TableRow key={index}>
-                {tableHead?.map((head: any, index: number) => (
-                  <TableCell sx={{ border: "none" }} key={index}>
-                    {head.isImage ? (
-                      <Box sx={{ display: "flex", gap: 2 }}>
-                        {/* <Box>
+            tableBody?.map((body: any, index: number) => {
+              return (
+                <TableRow
+                  onClick={() => handleClickRow(body)}
+                  key={index}
+                  sx={{
+                    bgcolor: (statusDataRebuild(body?.status) as any)?.color,
+                    transition: "0.3s all",
+                    "&:hover": {
+                      cursor: "pointer",
+                    },
+                    "&:active": {
+                      bgcolor: cyan[500],
+                    },
+                  }}
+                >
+                  {tableHead?.map((head: any, index: number) => {
+                    return (
+                      <TableCell
+                        sx={{
+                          border: "none",
+                          p: 0.5,
+                        }}
+                        key={index}
+                      >
+                        {head.isImage ? (
+                          <Box sx={{ display: "flex", gap: 2 }}>
+                            {/* <Box>
                           <img
                             width="90px"
                             style={{ borderRadius: "12px" }}
                             src={body.image}
                           />
                         </Box> */}
-                        <Box>
-                          <Typography
-                            textTransform="capitalize"
-                            fontWeight={600}
+                            <Box>
+                              <Typography
+                                textTransform="capitalize"
+                                fontWeight={600}
+                              >
+                                {body[head.id]}
+                              </Typography>
+                              <Typography fontSize={14} color={grey[500]}>
+                                NIK : {body.nik}
+                              </Typography>
+                            </Box>
+                          </Box>
+                        ) : head.isGrid ? (
+                          <Box>
+                            <Typography
+                              textTransform="capitalize"
+                              fontWeight={600}
+                            >
+                              {body[head.id]}
+                            </Typography>
+                            <Typography fontSize={14} color={grey[500]}>
+                              {body.status}
+                            </Typography>
+                          </Box>
+                        ) : head.isStatus ? (
+                          <Box
+                            sx={{
+                              width: "fit-content",
+                              p: 0.5,
+                              borderRadius: "5px",
+                            }}
                           >
-                            {body[head.id]}
-                          </Typography>
-                          <Typography fontSize={14} color={grey[500]}>
-                            NIK : {body.nik}
-                          </Typography>
-                        </Box>
-                      </Box>
-                    ) : head.isGrid ? (
-                      <Box>
-                        <Typography textTransform="capitalize" fontWeight={600}>
-                          {body[head.id]}
-                        </Typography>
-                        <Typography fontSize={14} color={grey[500]}>
-                          {body.status}
-                        </Typography>
-                      </Box>
-                    ) : head.isStatus ? (
-                      <Box
-                        sx={{
-                          bgcolor: body.color,
-                          width: "fit-content",
-                          p: 1,
-                          borderRadius: "5px",
-                        }}
-                      >
-                        <Typography sx={{ fontSize: 12, color: "#fff" }}>
-                          {body[head.id]}
-                        </Typography>
-                      </Box>
-                    ) : (
-                      body[head.id]
-                    )}
-                  </TableCell>
-                ))}
-                {/* <TableCell sx={{ border: "none" }}>
+                            <Typography variant="subtitle2" fontWeight={400}>
+                              {(statusDataRebuild(body[head.id]) as any)?.value}
+                            </Typography>
+                          </Box>
+                        ) : (
+                          body[head.id]
+                        )}
+                      </TableCell>
+                    );
+                  })}
+                  {/* <TableCell sx={{ border: "none" }}>
                   <Button
                     onClick={() => handleClickReply(body)}
                     variant="contained"
@@ -123,8 +215,9 @@ function TableComponent({
                     {btnLabel}
                   </Button>
                 </TableCell> */}
-              </TableRow>
-            ))
+                </TableRow>
+              );
+            })
           )}
         </TableBody>
       </Table>
