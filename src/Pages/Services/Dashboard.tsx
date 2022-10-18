@@ -29,7 +29,12 @@ function Dashboard() {
   });
   const { items } = useFetch({
     module: "service_in",
+    select: `*,printer_type : printer_type_id(name)`,
   });
+  const itemRebuild = items?.map((i: any) => ({
+    ...i,
+    printer_type: i?.printer_type?.name,
+  }));
   const navigate: NavigateFunction = useNavigate();
   const location: Location = useLocation();
   const tahbleHead: {
@@ -41,16 +46,24 @@ function Dashboard() {
       label: "Nama",
     },
     {
-      id: "access_code",
-      label: "Akses kode",
+      id: "phone",
+      label: "No. telpon",
     },
     {
-      id: "email",
-      label: "Akses kode",
+      id: "address",
+      label: "Alamat",
     },
     {
-      id: "position_name",
-      label: "Posisi",
+      id: "printer_type",
+      label: "Type printer",
+    },
+    {
+      id: "printer_model",
+      label: "Model",
+    },
+    {
+      id: "failure",
+      label: "Kerusakan",
     },
   ];
   const tableBody = items?.map((i: any) => ({
@@ -72,7 +85,7 @@ function Dashboard() {
           Tambah servisan masuk
         </Button>
       </Box>
-      <TableComponent tableBody={tableBody} tableHead={tahbleHead} />
+      <TableComponent tableBody={itemRebuild} tableHead={tahbleHead} />
       <ModalScreen
         isLoading={isLoading}
         handleSubmit={handleSubmit}
