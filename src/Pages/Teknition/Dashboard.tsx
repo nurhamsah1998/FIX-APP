@@ -7,9 +7,7 @@ import {
   useLocation,
   Location,
 } from "react-router-dom";
-import ModalScreen from "../../Component/ModalScreen";
 import TableComponent from "../../Component/TableComponent";
-import FormCreate from "./FormCreate";
 import useFetch from "../../Hook/useFetch";
 import useMutationPost from "../../Hook/Mutation/useMutationPost";
 import Detail from "./Detail";
@@ -92,13 +90,7 @@ function Dashboard() {
   };
   return (
     <Box>
-      <Box sx={{ mb: 3, display: "flex", justifyContent: "space-between" }}>
-        <Button
-          variant="contained"
-          onClick={() => navigate("?create-employee")}
-        >
-          Tambah servisan masuk
-        </Button>
+      <Box sx={{ mb: 3, display: "flex", justifyContent: "flex-end" }}>
         <Button
           variant="contained"
           color="error"
@@ -116,27 +108,6 @@ function Dashboard() {
         tableHead={tahbleHead}
         variant="main"
       />
-      <ModalScreen
-        isLoading={isLoading}
-        handleSubmit={handleSubmit}
-        open={location.search?.includes("?create-employee")}
-        handleClose={() => navigate(-1)}
-        title="Tambah servisan masuk"
-        variant="main"
-        cancelLabel="Batal"
-        submitLabel="Buat"
-      >
-        <Formik
-          innerRef={formRef}
-          initialValues={initialValues}
-          onSubmit={(values: any) => {
-            console.log(values);
-            mutationPost.mutate(values);
-          }}
-        >
-          {(props: FormikProps<any>) => <FormCreate {...props} />}
-        </Formik>
-      </ModalScreen>
       <Detail
         isLoading={isLoading}
         handleSubmit={handleSubmit}

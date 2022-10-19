@@ -1,6 +1,6 @@
 import LayoutTeknition from "../Layout/Teknition";
 import TeknitionMainLayout from "../Layout/Teknition/TeknitionMainLayout";
-import Dashboard from "../Layout/Teknition/Pages/Dashboard/Dashboard";
+import Dashboard from "../Pages/Teknition/Dashboard";
 import LoginTecnition from "../Auth/Login/LoginTecnition";
 import { Navigate } from "react-router-dom";
 

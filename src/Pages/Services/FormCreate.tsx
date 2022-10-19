@@ -49,6 +49,12 @@ function FormCreate({ ...props }) {
           fullWidth
           {...props.getFieldProps("failure")}
         />
+        <TextField
+          size="small"
+          label="Catatan user service"
+          fullWidth
+          {...props.getFieldProps("user_note_service")}
+        />
       </Box>
       <SubmitForm />
     </Form>

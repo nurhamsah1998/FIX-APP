@@ -1,6 +1,6 @@
 import LoginAdmin from "../Auth/Login/LoginAdmin";
 import LayoutAdmin from "../Layout/Admin";
-import Dashboard from "../Layout/Teknition/Pages/Dashboard/Dashboard";
+import Dashboard from "../Pages/Admin/Dashboard";
 import { Navigate } from "react-router-dom";
 import AdminMainLayout from "../Layout/Admin/AdminMainLayout";
 

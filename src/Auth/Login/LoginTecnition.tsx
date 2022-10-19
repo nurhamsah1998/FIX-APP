@@ -1,16 +1,17 @@
 import React, { useContext, useEffect } from "react";
 import { Box, Button, Link, Paper, TextField, Typography } from "@mui/material";
-import { grey, green } from "@mui/material/colors";
-import ListItemButton from "@mui/material/ListItemButton";
+import { supabase } from "../../Hook/supabase";
 import { Formik, Form } from "formik";
 import { useNavigate, NavigateFunction } from "react-router-dom";
 import LoadingButton from "../../Component/LoadingButton";
+import { useSnackbar } from "notistack";
 
 function LoginTecnition() {
+  const { enqueueSnackbar } = useSnackbar();
   const navigate: NavigateFunction = useNavigate();
   const [show, setShow] = React.useState(false);
   const [loading, setLoading] = React.useState(false);
-
+  const TEKNITION: string = "c7a8c27d-3e68-431f-8089-5f3c42426caf";
   return (
     <Box
       sx={{
@@ -53,7 +54,35 @@ function LoginTecnition() {
               password: "",
             }}
             onSubmit={async (values) => {
-              console.log(values);
+              setLoading(true);
+              let { user: login_success, error: login_error } =
+                await supabase.auth.signIn({
+                  email: values?.email,
+                  password: values?.password,
+                });
+              if (login_success) {
+                let { data, error } = await supabase
+                  .from("account_employee")
+                  .select("*")
+                  .eq("id", supabase.auth.user()?.id);
+                if (data?.[0]?.position_id === TEKNITION) {
+                  setLoading(false);
+                  console.log(data);
+                  navigate("/fix/teknition/teknition-app/teknition-dashboard");
+                } else {
+                  setLoading(false);
+                  localStorage.clear();
+                  enqueueSnackbar("Periksa emal dan kode akses anda!", {
+                    variant: "error",
+                  });
+                }
+              }
+              if (login_error) {
+                setLoading(false);
+                enqueueSnackbar("Periksa emal dan kode akses anda!", {
+                  variant: "error",
+                });
+              }
             }}
           >
             {({ getFieldProps }) => (
@@ -82,6 +111,7 @@ function LoginTecnition() {
                   <LoadingButton
                     sx={{ mt: 2 }}
                     fullWidth
+                    isLoading={loading}
                     type="submit"
                     title="Login"
                   />

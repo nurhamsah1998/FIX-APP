@@ -11,6 +11,43 @@ import {
 } from "@mui/material";
 import { cyan, green, orange, purple, red, grey } from "@mui/material/colors";
 
+export const statusDataRebuild: (params: any) => void = (params: any) => {
+  const status = [
+    {
+      id: "process_line",
+      value: "Proses antrian servis",
+      color: "#fff",
+    },
+    {
+      id: "confirmation_awaiting",
+      value: "Tunggu konfirmasi",
+      color: purple[300],
+    },
+    {
+      id: "success_not_pick",
+      value: "Selesai belum diambil",
+      color: orange[300],
+    },
+    {
+      id: "cancel",
+      value: "Cancel",
+      color: red[300],
+    },
+    {
+      id: "success_delivery",
+      value: "Selesai diantar",
+      color: cyan[300],
+    },
+    {
+      id: "success_pick",
+      value: "Selesai diambil",
+      color: green[300],
+    },
+  ];
+  const findValue = status.find((i: any) => i?.id === params);
+  return findValue;
+};
+
 function TableComponent({
   tableHead,
   tableBody,
@@ -28,42 +65,6 @@ function TableComponent({
   btnLabel?: string;
   emptyTag?: string;
 }) {
-  const statusDataRebuild: (params: any) => void = (params: any) => {
-    const status = [
-      {
-        id: "process",
-        value: "Proses",
-        color: "#fff",
-      },
-      {
-        id: "awaiting",
-        value: "Tunggu konfirmasi",
-        color: purple[500],
-      },
-      {
-        id: "success_not_pick",
-        value: "Selesai belum diambil",
-        color: orange[500],
-      },
-      {
-        id: "cancel",
-        value: "Cancel",
-        color: red[500],
-      },
-      {
-        id: "success_delivery",
-        value: "Selesai diantar",
-        color: cyan[500],
-      },
-      {
-        id: "success_pick",
-        value: "Selesai diambil",
-        color: green[500],
-      },
-    ];
-    const findValue = status.find((i: any) => i?.id === params);
-    return findValue;
-  };
   const COLOR = (params: any) => {
     const color = [
       {
