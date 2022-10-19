@@ -3,7 +3,7 @@ import Backdrop from "@mui/material/Backdrop";
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
 import Fade from "@mui/material/Fade";
-import Typography from "@mui/material/Typography";
+import { Typography, Button } from "@mui/material";
 import LoadingButton from "./LoadingButton";
 import { grey, orange, red } from "@mui/material/colors";
 
@@ -16,9 +16,11 @@ export default function ModalScreen({
   handleSubmit,
   isLoading,
   isDetail = false,
+  isTecnition = false,
   variant = "main",
   cancelLabel = "batal",
   submitLabel = "simpan",
+  handleClickTeknition,
 }: {
   open: any;
   handleClose: any;
@@ -31,6 +33,8 @@ export default function ModalScreen({
   variant: any;
   cancelLabel: any;
   submitLabel: any;
+  isTecnition?: boolean;
+  handleClickTeknition?: any;
 }) {
   const COLOR = (params: any) => {
     const color = [
@@ -88,6 +92,9 @@ export default function ModalScreen({
                   bgcolor: COLOR(variant),
                   borderRadius: "5px 5px 0px 0px",
                   color: "#fff",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "space-between",
                 }}
               >
                 <Typography
@@ -98,6 +105,17 @@ export default function ModalScreen({
                 >
                   {title}
                 </Typography>
+                {isTecnition ? (
+                  <Box>
+                    <Button
+                      onClick={handleClickTeknition}
+                      variant="contained"
+                      color="warning"
+                    >
+                      Rubah status
+                    </Button>
+                  </Box>
+                ) : null}
               </Box>
               <Box
                 sx={{
