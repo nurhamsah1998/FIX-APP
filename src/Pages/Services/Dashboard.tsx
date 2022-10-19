@@ -12,6 +12,7 @@ import TableComponent from "../../Component/TableComponent";
 import FormCreate from "./FormCreate";
 import useFetch from "../../Hook/useFetch";
 import useMutationPost from "../../Hook/Mutation/useMutationPost";
+import Detail from "./Detail";
 
 export const initialValues = {
   name: "",
@@ -122,18 +123,12 @@ function Dashboard() {
           {(props: FormikProps<any>) => <FormCreate {...props} />}
         </Formik>
       </ModalScreen>
-      <ModalScreen
+      <Detail
         isLoading={isLoading}
         handleSubmit={handleSubmit}
-        open={open.active}
-        handleClose={() => setOpen({ active: false, data: [] })}
-        title="Detail user servis"
-        variant="main"
-        cancelLabel="Batal"
-        submitLabel="Buat"
-      >
-        {open.data?.id}
-      </ModalScreen>
+        open={open}
+        setOpen={setOpen}
+      />
     </Box>
   );
 }
