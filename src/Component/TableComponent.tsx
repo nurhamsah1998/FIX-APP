@@ -54,6 +54,7 @@ export const status = [
     id: "cancel",
     value: "Cancel",
     color: red[300],
+    isTecnition: true,
   },
   {
     id: "success_delivery",

@@ -21,6 +21,7 @@ export default function ModalScreen({
   cancelLabel = "batal",
   submitLabel = "simpan",
   handleClickTeknition,
+  handleClickTeknitionGiveNote,
 }: {
   open: any;
   handleClose: any;
@@ -35,6 +36,7 @@ export default function ModalScreen({
   submitLabel: any;
   isTecnition?: boolean;
   handleClickTeknition?: any;
+  handleClickTeknitionGiveNote?: any;
 }) {
   const COLOR = (params: any) => {
     const color = [
@@ -106,7 +108,14 @@ export default function ModalScreen({
                   {title}
                 </Typography>
                 {isTecnition ? (
-                  <Box>
+                  <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
+                    <Button
+                      onClick={handleClickTeknitionGiveNote}
+                      variant="contained"
+                      color="success"
+                    >
+                      Beri catatan
+                    </Button>
                     <Button
                       onClick={handleClickTeknition}
                       variant="contained"

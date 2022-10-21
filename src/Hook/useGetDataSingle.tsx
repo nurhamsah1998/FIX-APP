@@ -6,19 +6,17 @@ function useGetDataSingle({
   select = "*",
   enabled = true,
   filterBy = "account_owner_id",
+  value = supabase.auth.user()?.id,
 }: {
   module: string;
   select?: string;
   filterBy?: string;
   enabled?: boolean;
+  value?: any;
 }) {
   const query = useQuery(
-    [module, enabled, filterBy],
-    () =>
-      supabase
-        .from(module)
-        .select(select)
-        .eq(filterBy, supabase.auth.user()?.id),
+    [module, enabled, filterBy, value],
+    () => supabase.from(module).select(select).eq(filterBy, value),
     {
       enabled: Boolean(enabled),
     }

@@ -1,5 +1,11 @@
 import React from "react";
-import { ListItemText, Typography, Box, Button } from "@mui/material";
+import {
+  ListItemText,
+  Typography,
+  Box,
+  Button,
+  TextField,
+} from "@mui/material";
 import ModalScreen from "../../Component/ModalScreen";
 import { grey } from "@mui/material/colors";
 import { statusDataRebuild } from "../../Component/TableComponent";
@@ -22,6 +28,12 @@ function Detail({
     data: "",
     index: null,
   });
+  const [note, setNote] = React.useState<any>({
+    open: false,
+    data: "",
+    index: null,
+  });
+  const [noteValue, setNoteValue] = React.useState<string>("");
   const { mutationPatch, isLoading: loadingMutate } = useMutationPatch({
     module: "service_in",
     and: true,
@@ -73,6 +85,7 @@ function Detail({
     {
       id: "status",
       label: "Status",
+      pureValue: open?.data?.status,
       value: (statusDataRebuild(open?.data?.status) as any)?.value,
     },
   ];
@@ -81,12 +94,20 @@ function Detail({
     const body: any = { status: statusChange?.data?.id, id: open?.data?.id };
     mutationPatch.mutate(body);
   };
+  const handleSubmitGiveNote: () => void = () => {
+    const body: any = { teknition_note: noteValue, id: open?.data?.id };
+    mutationPatch.mutate(body);
+  };
   return (
     <Box>
       <ModalScreen
+        isDetail
         isTecnition
         handleClickTeknition={() =>
           setStatusChange((i: any) => ({ ...i, open: true }))
+        }
+        handleClickTeknitionGiveNote={() =>
+          setNote((i: any) => ({ ...i, open: true }))
         }
         isLoading={isLoading}
         handleSubmit={handleSubmit}
@@ -94,7 +115,7 @@ function Detail({
         handleClose={() => setOpen({ active: false, data: [] })}
         title="Detail user servis"
         variant="main"
-        cancelLabel="Batal"
+        cancelLabel="Tutup"
         submitLabel="Buat"
       >
         {head?.map((i: any, e: number) => (
@@ -112,7 +133,9 @@ function Detail({
         isLoading={loadingMutate}
         handleSubmit={handleSubmitChangeStatus}
         open={statusChange.open}
-        handleClose={() => setStatusChange((i: any) => ({ ...i, open: false }))}
+        handleClose={() =>
+          setStatusChange((i: any) => ({ ...i, index: null, open: false }))
+        }
         title="Rubah status user servis"
         variant="main"
         cancelLabel="Batal"
@@ -123,7 +146,12 @@ function Detail({
           ?.map((x: any, y: number) => (
             <Button
               key={y}
-              variant={statusChange.index === y ? "contained" : "outlined"}
+              variant={
+                open?.data?.status === x?.id || statusChange.index === y
+                  ? "contained"
+                  : "outlined"
+              }
+              disabled={open?.data?.status === x?.id}
               onClick={() =>
                 setStatusChange((i: any) => ({ ...i, index: y, data: x }))
               }
@@ -131,6 +159,29 @@ function Detail({
               {x?.value}
             </Button>
           ))}
+      </ModalScreen>
+      <ModalScreen
+        isLoading={loadingMutate}
+        handleSubmit={handleSubmitGiveNote}
+        open={note.open}
+        handleClose={() =>
+          setNote((i: any) => ({ ...i, index: null, open: false }))
+        }
+        title="Beri catatan"
+        variant="main"
+        cancelLabel="Batal"
+        submitLabel="Simpan perubahan"
+      >
+        <TextField
+          onChange={(i) => setNoteValue(i?.target.value)}
+          label="Tulis catatan"
+          value={noteValue}
+          multiline
+          rows={4}
+          fullWidth
+          inputProps={{ maxLength: 200 }}
+          helperText={`${noteValue?.length}/200`}
+        />
       </ModalScreen>
     </Box>
   );

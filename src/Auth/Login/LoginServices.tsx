@@ -77,7 +77,7 @@ function LoginServices() {
                   .eq("id", supabase.auth.user()?.id);
                 if (data?.[0]?.position_id === USER_SERVICES) {
                   setLoading(false);
-                  console.log(data);
+
                   navigate("/fix/services/services-app/services-dashboard");
                 } else {
                   setLoading(false);

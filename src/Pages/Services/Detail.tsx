@@ -15,7 +15,6 @@ function Detail({
   open: any;
   setOpen: any;
 }) {
-  console.log(open.data);
   const head = [
     {
       id: "name",
