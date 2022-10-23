@@ -3,11 +3,11 @@ import React from "react";
 import { Navigate, Outlet } from "react-router-dom";
 import ScreenLoading from "../../Component/ScreenLoading";
 import { EmployeeContext } from "../../Hook/Context";
-import useGetData from "../../Hook/useGetDataSingle";
+import useGetDataSingle from "../../Hook/useGetDataSingle";
 import { pickRole } from "../../Utils/RoleConfig/RoleConfig";
 
 function ServicesMainLayout() {
-  const { items, isFetched, isLoading } = useGetData({
+  const { items, isFetched, isLoading } = useGetDataSingle({
     module: "account_employee",
     filterBy: "id",
     select: "*, position_name:position_id(name)",

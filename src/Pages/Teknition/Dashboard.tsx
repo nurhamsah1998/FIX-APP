@@ -1,4 +1,4 @@
-import { Box, Button } from "@mui/material";
+import { Box, Button, Typography } from "@mui/material";
 import { Form, Formik, FormikProps } from "formik";
 import React, { useState, useContext } from "react";
 import {
@@ -11,6 +11,7 @@ import TableComponent from "../../Component/TableComponent";
 import useFetch from "../../Hook/useFetch";
 import useMutationPost from "../../Hook/Mutation/useMutationPost";
 import Detail from "./Detail";
+import { EmployeeContext } from "../../Hook/Context";
 
 export const initialValues = {
   name: "",
@@ -24,6 +25,7 @@ export const initialValues = {
 };
 
 function Dashboard() {
+  const { employeeProfile } = useContext<any>(EmployeeContext);
   const { mutationPost, isLoading } = useMutationPost({
     module: "service_in",
   });
@@ -90,6 +92,12 @@ function Dashboard() {
   };
   return (
     <Box>
+      <Typography variant="h3" textAlign="center" fontWeight={700}>
+        {employeeProfile?.company_name}
+      </Typography>
+      <Typography variant="h6" textAlign="center" mb={3}>
+        Pelayanan user service
+      </Typography>
       <Box sx={{ mb: 3, display: "flex", justifyContent: "flex-end" }}>
         <Button
           variant="contained"
