@@ -50,6 +50,7 @@ function useMutationPost({
               ...value,
               id: localStorage.getItem("employeeID"),
               account_owner_id: data?.id,
+              company_name: data?.company_name,
             });
             client.invalidateQueries([module]);
             enqueueSnackbar(successMessage, { variant: "success" });
