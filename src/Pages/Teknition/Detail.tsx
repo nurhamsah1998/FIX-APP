@@ -10,6 +10,7 @@ import ModalScreen from "../../Component/ModalScreen";
 import { grey } from "@mui/material/colors";
 import { statusDataRebuild } from "../../Component/TableComponent";
 import { status } from "../../Component/TableComponent";
+import { EmployeeContext } from "../../Hook/Context";
 import useMutationPatch from "../../Hook/Mutation/useMutationPatch";
 
 function Detail({
@@ -23,6 +24,8 @@ function Detail({
   open: any;
   setOpen: any;
 }) {
+  const { employeeProfile } = React.useContext<any>(EmployeeContext);
+  console.log(employeeProfile, "sss");
   const [statusChange, setStatusChange] = React.useState<any>({
     open: false,
     data: "",
@@ -91,7 +94,11 @@ function Detail({
   ];
 
   const handleSubmitChangeStatus: () => void = () => {
-    const body: any = { status: statusChange?.data?.id, id: open?.data?.id };
+    const body: any = {
+      status: statusChange?.data?.id,
+      id: open?.data?.id,
+      worked_by: employeeProfile?.name,
+    };
     mutationPatch.mutate(body);
   };
   const handleSubmitGiveNote: () => void = () => {

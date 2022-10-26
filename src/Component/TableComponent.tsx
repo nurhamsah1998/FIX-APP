@@ -27,17 +27,18 @@ export const status = [
     color: "#fff",
   },
   {
-    id: "confirmation_awaiting",
-    value: "Tunggu konfirmasi",
-    color: purple[300],
-    isTecnition: true,
-  },
-  {
     id: "on_process",
     value: "Dalam pengerjaan",
     color: pink[300],
     isTecnition: true,
   },
+  {
+    id: "confirmation_awaiting",
+    value: "Tunggu konfirmasi",
+    color: purple[300],
+    isTecnition: true,
+  },
+
   {
     id: "success_not_check",
     value: "Selesai belum dicek",

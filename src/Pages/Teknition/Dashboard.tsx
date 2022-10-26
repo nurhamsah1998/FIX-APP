@@ -81,6 +81,10 @@ function Dashboard() {
       label: "Status",
       isStatus: true,
     },
+    {
+      id: "worked_by",
+      label: "Teknisi",
+    },
   ];
   const formRef = React.useRef<any>();
 
@@ -96,7 +100,7 @@ function Dashboard() {
         {employeeProfile?.company_name}
       </Typography>
       <Typography variant="h6" textAlign="center" mb={3}>
-        Pelayanan user service
+        Teknisi
       </Typography>
       <Box sx={{ mb: 3, display: "flex", justifyContent: "flex-end" }}>
         <Button

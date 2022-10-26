@@ -64,13 +64,14 @@ function Detail({
   ];
   return (
     <ModalScreen
+      isDetail
       isLoading={isLoading}
       handleSubmit={handleSubmit}
       open={open.active}
       handleClose={() => setOpen({ active: false, data: [] })}
       title="Detail user servis"
       variant="main"
-      cancelLabel="Batal"
+      cancelLabel="Tutup"
       submitLabel="Buat"
     >
       {head?.map((i: any, e: number) => (
