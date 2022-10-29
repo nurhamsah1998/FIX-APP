@@ -12,6 +12,9 @@ import { statusDataRebuild } from "../../Component/TableComponent";
 import { status } from "../../Component/TableComponent";
 import { EmployeeContext } from "../../Hook/Context";
 import useMutationPatch from "../../Hook/Mutation/useMutationPatch";
+import { Form, Formik } from "formik";
+import PicIcon from "../../Component/PicIcon";
+import SubmitForm from "../../Component/SubmitForm";
 
 function Detail({
   isLoading,
@@ -25,7 +28,6 @@ function Detail({
   setOpen: any;
 }) {
   const { employeeProfile } = React.useContext<any>(EmployeeContext);
-  console.log(employeeProfile, "sss");
   const [statusChange, setStatusChange] = React.useState<any>({
     open: false,
     data: "",
@@ -36,7 +38,11 @@ function Detail({
     data: "",
     index: null,
   });
+  const icon: (params: string) => JSX.Element = (params: string) => (
+    <PicIcon width={25} height={25} icon={params} />
+  );
   const [noteValue, setNoteValue] = React.useState<string>("");
+  const [pricing, setPricing] = React.useState<boolean>(false);
   const { mutationPatch, isLoading: loadingMutate } = useMutationPatch({
     module: "service_in",
     and: true,
@@ -92,18 +98,28 @@ function Detail({
       value: (statusDataRebuild(open?.data?.status) as any)?.value,
     },
   ];
-
+  const formRef = React.useRef<any>();
   const handleSubmitChangeStatus: () => void = () => {
     const body: any = {
       status: statusChange?.data?.id,
       id: open?.data?.id,
       worked_by: employeeProfile?.name,
     };
-    mutationPatch.mutate(body);
+    // mutationPatch.mutate(body);
+
+    if (
+      statusChange.data?.id === "success_not_check" ||
+      statusChange.data?.id === "success_done_check"
+    ) {
+      setPricing(true);
+    }
   };
   const handleSubmitGiveNote: () => void = () => {
     const body: any = { teknition_note: noteValue, id: open?.data?.id };
     mutationPatch.mutate(body);
+  };
+  const handleSubmitPricing: () => void = () => {
+    formRef.current?.handleSubmit();
   };
   return (
     <Box>
@@ -189,6 +205,127 @@ function Detail({
           inputProps={{ maxLength: 200 }}
           helperText={`${noteValue?.length}/200`}
         />
+      </ModalScreen>
+      <ModalScreen
+        isLoading={loadingMutate}
+        handleSubmit={handleSubmitGiveNote}
+        open={note.open}
+        handleClose={() =>
+          setNote((i: any) => ({ ...i, index: null, open: false }))
+        }
+        title="Beri catatan"
+        variant="main"
+        cancelLabel="Batal"
+        submitLabel="Simpan perubahan"
+      >
+        <TextField
+          onChange={(i) => setNoteValue(i?.target.value)}
+          label="Tulis catatan"
+          value={noteValue}
+          multiline
+          rows={4}
+          fullWidth
+          inputProps={{ maxLength: 200 }}
+          helperText={`${noteValue?.length}/200`}
+        />
+      </ModalScreen>
+      <ModalScreen
+        isLoading={loadingMutate}
+        handleSubmit={handleSubmitPricing}
+        open={pricing}
+        handleClose={() => setPricing(false)}
+        title="Biaya servis"
+        variant="main"
+        cancelLabel="Batal"
+        submitLabel="Simpan perubahan"
+      >
+        <Formik
+          innerRef={formRef}
+          initialValues={{
+            pricing: [
+              {
+                id: Math.random() * 5,
+                name: "",
+                price: "",
+                quantity: "",
+              },
+            ],
+          }}
+          onSubmit={(values) => {
+            console.log(values?.pricing);
+          }}
+          enableReinitialize
+        >
+          {({ getFieldProps, setFieldValue, values }) => (
+            <Form>
+              <Box sx={{ display: "grid", gap: 2 }}>
+                {values.pricing?.map((x: any, y: number) => {
+                  return (
+                    <Box sx={{ display: "flex", gap: 2 }} key={y}>
+                      <TextField
+                        size="small"
+                        fullWidth
+                        placeholder="name"
+                        {...getFieldProps(`pricing[${y}].name`)}
+                      />
+                      <TextField
+                        size="small"
+                        type="number"
+                        placeholder="quantity"
+                        {...getFieldProps(`pricing[${y}].quantity`)}
+                      />
+                      <TextField
+                        size="small"
+                        fullWidth
+                        placeholder="price"
+                        type="number"
+                        {...getFieldProps(`pricing[${y}].price`)}
+                      />
+                      {y === 0 ? null : (
+                        <Button
+                          onClick={() => {
+                            const clone: {
+                              name: string;
+                              price: string;
+                              quantity: string;
+                            }[] = [...values.pricing];
+                            const delItem = clone.filter(
+                              (i: any) => i.id !== x.id
+                            );
+                            setFieldValue("pricing", delItem);
+                          }}
+                          variant="contained"
+                          color="error"
+                        >
+                          {icon("ant-design:delete-filled")}
+                        </Button>
+                      )}
+                    </Box>
+                  );
+                })}
+              </Box>
+              <Button
+                variant="contained"
+                onClick={() => {
+                  setFieldValue("pricing", [
+                    ...values.pricing,
+                    {
+                      id: Math.random() * 5,
+                      name: "",
+                      price: "",
+                      quantity: "",
+                    },
+                  ]);
+                }}
+                fullWidth
+                sx={{ mt: 3 }}
+              >
+                Tambah Biaya
+              </Button>
+              <SubmitForm />
+            </Form>
+          )}
+        </Formik>
       </ModalScreen>
     </Box>
   );
