@@ -40,15 +40,9 @@ export const status = [
   },
 
   {
-    id: "success_not_check",
-    value: "Selesai belum dicek",
+    id: "success",
+    value: "Selesai",
     color: orange[300],
-    isTecnition: true,
-  },
-  {
-    id: "success_done_check",
-    value: "Selesai sudah dicek",
-    color: yellow[300],
     isTecnition: true,
   },
   {

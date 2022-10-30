@@ -43,11 +43,31 @@ function Detail({
   );
   const [noteValue, setNoteValue] = React.useState<string>("");
   const [pricing, setPricing] = React.useState<boolean>(false);
+  const [confirm, setConfirm] = React.useState<any>({
+    open: false,
+    pricingSend: [
+      {
+        id: Math.random() * 5,
+        name: "",
+        price: "",
+        quantity: "",
+      },
+    ],
+  });
   const { mutationPatch, isLoading: loadingMutate } = useMutationPatch({
     module: "service_in",
     and: true,
     doThis: () => {
       setStatusChange((i: any) => ({ ...i, open: false }));
+      setOpen({ active: false, data: [] });
+      setStatusChange((i: any) => ({ ...i, index: null, open: false }));
+      setPricing(false);
+      setConfirm((i: any) => ({
+        pricingSend: [
+          { id: Math.random() * 5, name: "", price: "", quantity: "" },
+        ],
+        open: false,
+      }));
     },
   });
   const head = [
@@ -100,18 +120,16 @@ function Detail({
   ];
   const formRef = React.useRef<any>();
   const handleSubmitChangeStatus: () => void = () => {
-    const body: any = {
-      status: statusChange?.data?.id,
-      id: open?.data?.id,
-      worked_by: employeeProfile?.name,
-    };
-    // mutationPatch.mutate(body);
-
-    if (
-      statusChange.data?.id === "success_not_check" ||
-      statusChange.data?.id === "success_done_check"
-    ) {
+    if (statusChange.data?.id === "success") {
       setPricing(true);
+      return;
+    } else {
+      const body: any = {
+        status: statusChange?.data?.id,
+        id: open?.data?.id,
+        worked_by: employeeProfile?.name,
+      };
+      mutationPatch.mutate(body);
     }
   };
   const handleSubmitGiveNote: () => void = () => {
@@ -142,13 +160,22 @@ function Detail({
         submitLabel="Buat"
       >
         {head?.map((i: any, e: number) => (
-          <Box key={e} sx={{ display: "grid", mb: 0.7 }}>
-            <Typography mb={-0.5} fontSize="subtitle" color={grey[600]}>
-              {i?.label}
-            </Typography>
-            <Typography fontSize={17} ml={1}>
-              {i?.value}
-            </Typography>
+          <Box key={e}>
+            <Box sx={{ display: "grid", mb: 0.7 }}>
+              <Typography mb={-0.5} fontSize="subtitle" color={grey[600]}>
+                {i?.label}
+              </Typography>
+              <Typography fontSize={17} ml={1}>
+                {i?.value}
+              </Typography>
+            </Box>
+            <Box>
+              {open?.data?.pricing?.map((x: any, y: number) => (
+                <Box>
+                  <Typography>{x?.price}</Typography>
+                </Box>
+              ))}
+            </Box>
           </Box>
         ))}
       </ModalScreen>
@@ -230,7 +257,6 @@ function Detail({
         />
       </ModalScreen>
       <ModalScreen
-        isLoading={loadingMutate}
         handleSubmit={handleSubmitPricing}
         open={pricing}
         handleClose={() => setPricing(false)}
@@ -242,17 +268,10 @@ function Detail({
         <Formik
           innerRef={formRef}
           initialValues={{
-            pricing: [
-              {
-                id: Math.random() * 5,
-                name: "",
-                price: "",
-                quantity: "",
-              },
-            ],
+            pricing: confirm.pricingSend,
           }}
           onSubmit={(values) => {
-            console.log(values?.pricing);
+            setConfirm({ open: true, pricingSend: values?.pricing });
           }}
           enableReinitialize
         >
@@ -326,6 +345,28 @@ function Detail({
             </Form>
           )}
         </Formik>
+      </ModalScreen>
+      <ModalScreen
+        isLoading={loadingMutate}
+        handleSubmit={() => {
+          const body: any = {
+            id: open?.data?.id,
+            pricing: confirm.pricingSend,
+            status: statusChange?.data?.id,
+            worked_by: employeeProfile?.name,
+          };
+          mutationPatch.mutate(body);
+        }}
+        open={confirm.open}
+        handleClose={() => setConfirm((i: any) => ({ ...i, open: false }))}
+        title="Selesai ?"
+        variant="main"
+        cancelLabel="Batal"
+        submitLabel="Kirim"
+      >
+        <Typography>
+          Apakah anda yakin ingin mengirim status selesai?
+        </Typography>
       </ModalScreen>
     </Box>
   );
