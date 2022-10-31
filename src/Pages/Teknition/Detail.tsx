@@ -159,25 +159,35 @@ function Detail({
         cancelLabel="Tutup"
         submitLabel="Buat"
       >
-        {head?.map((i: any, e: number) => (
-          <Box key={e}>
-            <Box sx={{ display: "grid", mb: 0.7 }}>
-              <Typography mb={-0.5} fontSize="subtitle" color={grey[600]}>
-                {i?.label}
-              </Typography>
-              <Typography fontSize={17} ml={1}>
-                {i?.value}
-              </Typography>
-            </Box>
-            <Box>
-              {open?.data?.pricing?.map((x: any, y: number) => (
-                <Box>
-                  <Typography>{x?.price}</Typography>
-                </Box>
-              ))}
-            </Box>
+        <Box sx={{ display: "flex", gap: 2 }}>
+          <Box sx={{ display: "grid" }}>
+            {head?.map((i: any, e: number) => (
+              <Box key={e} sx={{ display: "grid", mb: 0.7 }}>
+                <Typography mb={-0.5} fontSize="subtitle" color={grey[600]}>
+                  {i?.label}
+                </Typography>
+                <Typography fontSize={17} ml={1}>
+                  {i?.value}
+                </Typography>
+              </Box>
+            ))}
           </Box>
-        ))}
+          <Box>
+            <Typography variant="h5" mb={2}>
+              Biaya service
+            </Typography>
+            {open?.data?.pricing?.map((x: any, y: number) => (
+              <Box>
+                <Typography mb={-0.5} fontSize="subtitle" color={grey[600]}>
+                  {x?.name}
+                </Typography>
+                <Typography fontSize={17} ml={1}>
+                  {x?.price}
+                </Typography>
+              </Box>
+            ))}
+          </Box>
+        </Box>
       </ModalScreen>
       <ModalScreen
         isLoading={loadingMutate}
